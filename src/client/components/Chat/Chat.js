@@ -11,7 +11,34 @@ class Chat extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
+    this.getId = this.getId.bind(this);
     this.makeUser = this.makeUser.bind(this);
+    this.register = this.register.bind(this);
+  }
+  getId(id) {
+    return document.getElementById(id);
+  }
+  register(){
+    console.log('register user');
+    var passport = require('passport')
+    , LocalStrategy =require('passport-local').Strategy;
+
+    //passport.js
+    passport.use(new LocalStrategy(
+      function(username, password, done) {
+        User.findOne({username: username}, function(err, user) {
+          if(err) {return done(err);}
+          if(!user){
+            return done(null, false, {message: 'Incorrect username.'});
+          }
+          if(!user.validPassword(password)) {
+            return done(null, false, { message: 'Incorrect password.' });
+          }
+
+          return done(null, user);
+        });
+      }
+    ));
   }
   handleChange(event) {
     this.setState({value: event.target.value});
@@ -28,6 +55,7 @@ class Chat extends Component {
     event.preventDefault();
 
   }
+
   makeUser(){
     //if username exists
     var username = this.state.value;
@@ -37,20 +65,33 @@ class Chat extends Component {
 
     //if username exists
 
-
     //else create new user
 
 
-
+    //connect socket.io
+    //var socket = io.connect('');
+    //if(socket !== undefined){
+      //console.log('Connected to socket');
+      //socket.emit('username', {
+        //name: username
+      //});
+      //event.preventDefault();
+    //}
 
   }
   render() {
     return (
       <div id='chat'>
+        <div id='registerButton'>
+          <button onClick={this.register}>Click me</button>
+        </div>
+        <div id='loginButton'>
+          <button onClick={this.login}>Login</button>
+        </div>
         <form onSubmit={this.handleSubmit}>
           <label>
             Name:
-            <input type ="text" value={this.state.value} onChange={this.handleChange} />
+            <input type ="text" value={this.state.value} onChange={this.handleChange} id='username' />
           </label>
           <input type="submit" value="Submit" />
         </form>
