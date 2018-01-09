@@ -9,7 +9,7 @@ class Main extends Component {
         <header className="header">
           <h1>InfinityChat</h1>
         </header>
-        <Chat />
+        <Chat/>
 
       </div>
     );
