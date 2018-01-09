@@ -2,7 +2,7 @@ const mongo = require('mongodb').MongoClient;
 const client = require('socket.io').listen(4000).sockets;
 
 // connect to MongoDB
-mongo.connect('mongodb://localhost/infinitychat', function(err, db) {
+mongo.connect('mongodb://ds245287.mlab.com:45287/infinitychat', function(err, db) {
   if(err) {
     throw err;
   }
