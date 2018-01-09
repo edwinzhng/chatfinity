@@ -1,12 +1,13 @@
-const mongo = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
 const client = require('socket.io').listen(4000).sockets;
 
 // connect to MongoDB
-mongo.connect('mongodb://ds245287.mlab.com:45287/infinitychat', function(err, db) {
+mongoose.connect('mongodb://ds245287.mlab.com:45287/infinitychat', { useMongoClient: true }, function(err, db) {
   if(err) {
     throw err;
   }
   console.log('MongoDB connected.');
+  console.log(db);
 
   // connect to socket.io
   client.on('connection', function(socket) {
