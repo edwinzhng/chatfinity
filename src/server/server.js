@@ -1,60 +1,42 @@
-const mongoose = require('mongoose');
-const client = require('socket.io').listen(4000).sockets;
+// set up all tools
+var express = require('express');
+var app = express();
+var port = process.env.PORT || 3000;
+var mongoose = require('mongoose');
+var passport = require('passport');
+var flash = require('connect-flash');
+var morgan       = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser   = require('body-parser');
+var session      = require('express-session');
+
+// config files
+var configDB = require('./config/database.js');
 
 // connect to MongoDB
-mongoose.connect('mongodb://ds245287.mlab.com:45287/infinitychat', { useMongoClient: true }, function(err, db) {
+mongoose.Promise = global.Promise;
+mongoose.connect(configDB.url, { useMongoClient: true } function(err, db) {
   if(err) {
     throw err;
   }
   console.log('MongoDB connected.');
   console.log(db);
-
-  // connect to socket.io
-  client.on('connection', function(socket) {
-    let chat = db.collection('chats');
-
-    sendStatus = function(s) {
-      socket.emit('status', s);
-    }
-
-    // get chats
-    chat.find().sort({ _id:1 }).toArray( function(err, res) {
-      if(err) {
-        throw err;
-      }
-
-      socket.emit('output', res);
-    });
-
-    // handle input events
-    socket.on('input', function(data) {
-      let name = data.name;
-      let message = data.message;
-
-      if(name == '' || message == '') {
-        // send error status
-        sendStatus('Please enter a name and a message');
-      }
-      else {
-        // insert messages
-        chat.insert({name: name, message: message}, function() {
-          client.emit('output', [data]);
-
-          // send status success
-          sendStatus({
-            message: 'Sent',
-            clear: true
-          });
-        });
-      }
-    });
-
-    // clear messages
-    socket.on('clear', function(data) {
-      chat.remove({}, function() {
-        socket.emit('cleared');
-      });
-    });
-
-  });
 });
+
+// express setup
+app.use(morgan('dev')); // log all requests for development
+app.use(cookieParser()); // read cookies for auth
+app.use(bodyParser()); // HTML form information
+
+// passport setup
+app.use(session({ secret: 'thankmrgoose' }));
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login session
+app.use(flash());
+
+// load routes
+require('./app/routes.js')(app, passport);
+
+// launch
+app.listen(port);
+console.log('Starting server on port: ' + port);

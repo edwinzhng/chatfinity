@@ -1,9 +1,9 @@
 # InfinityChat
 
-Time-limited chat app to connect random users built with MongoDB, Express, React and Node.
+Chat app to randomly connect users with limited time to chat. Built with MongoDB, Express, React, Node and Socket.io.
 
 ## Features
-* User Authentication with [Passport.js](http://www.passportjs.org/)
+* User authentication done locally, through Facebook or Google with [Passport.js](http://www.passportjs.org/)
 
 ## For local development
 
