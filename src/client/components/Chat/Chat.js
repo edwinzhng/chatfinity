@@ -22,7 +22,7 @@ class Chat extends Component {
     , LocalStrategy =require('passport-local').Strategy;
 
     //passport.js
-    passport.use(new LocalStrategy(
+    /* passport.use(new LocalStrategy(
       function(username, password, done) {
         User.findOne({username: username}, function(err, user) {
           if(err) {return done(err);}
@@ -37,6 +37,7 @@ class Chat extends Component {
         });
       }
     ));
+    */
   }
   handleChange(event) {
     this.setState({value: event.target.value});

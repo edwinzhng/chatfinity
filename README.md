@@ -3,7 +3,7 @@
 Chat app to randomly connect users with limited time to chat. Built with MongoDB, Express, React, Node and Socket.io.
 
 ## Features
-* User authentication done locally, through Facebook or Google with [Passport.js](http://www.passportjs.org/)
+* User authentication done locally or through Facebook/Google with [Passport.js](http://www.passportjs.org/)
 
 ## For local development
 
