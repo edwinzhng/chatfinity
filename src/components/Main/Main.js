@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Chat from '../Chat/Chat.js';
+import Chat from '../Chat/Chat';
 import './Main.css';
 
 class Main extends Component {
@@ -7,7 +7,7 @@ class Main extends Component {
     return (
       <div className="main">
         <header className="header">
-          <h1>InfinityChat</h1>
+          <h1>Chatfinity</h1>
         </header>
         <Chat/>
 
