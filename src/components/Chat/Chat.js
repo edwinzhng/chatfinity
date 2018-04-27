@@ -15,8 +15,12 @@ class Chat extends Component {
 
     this.handleChange = this.handleChange.bind(this);    
     this.sendMessage = this.sendMessage.bind(this);
+    this.addMessage = this.addMessage.bind(this);
 
     this.socket = io('localhost:3001');
+    this.socket.on('RECEIVE_MESSAGE', (message) => {
+      this.addMessage(message);
+    });
   }
 
   // handle input message changes
@@ -24,16 +28,20 @@ class Chat extends Component {
     this.setState({ text: event.target.value });
   }
 
+  addMessage(message) {
+    this.setState({ messages: [...this.state.messages, message] });
+  }
+
   // send message to other user
-  sendMessage() {
-    let messages = this.state.messages;
-    messages.push({
-      'user': this.state.username,
-      'text': this.state.text,
-      'id': this.state.messageID,
+  sendMessage(e) {
+    e.preventDefault();
+    this.socket.emit('SEND_MESSAGE', {
+      user: this.state.username,
+      text: this.state.text,
+      id: this.messageID
     })
-    this.setState({ 
-      messages: messages,
+    this.setState({
+      text: '',
       messageID: this.state.messageID + 1,
     });
   }
@@ -50,8 +58,10 @@ class Chat extends Component {
         <div className='messages'>
           { messages }
         </div>
-        <input type="text" placeholder="Type a message ..." className="message-input" value={this.state.message} onChange={this.handleChange}/>
-        <button className="send-btn" onClick={this.sendMessage}>Send</button>
+        <form className="message-form" onSubmit={this.sendMessage}>
+          <input type="text" placeholder="Type a message ..." className="message-input" value={this.state.text} onChange={this.handleChange}/>
+          <button className="send-btn" type="submit">Send</button>
+        </form>
       </div>
     );
   }

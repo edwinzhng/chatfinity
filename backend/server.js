@@ -34,4 +34,7 @@ const io = require('socket.io')(server);
 
 io.on('connection', (socket) => {
   console.log(socket.id);
+  socket.on('SEND_MESSAGE', (message) => {
+    io.emit('RECEIVE_MESSAGE', message);
+  });
 });
