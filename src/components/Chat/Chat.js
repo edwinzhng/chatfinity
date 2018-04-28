@@ -7,7 +7,6 @@ class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
       text: '',
       messageID: 0,
       messages: [],
@@ -36,7 +35,7 @@ class Chat extends Component {
   sendMessage(e) {
     e.preventDefault();
     this.socket.emit('SEND_MESSAGE', {
-      user: this.state.username,
+      user: this.props.username,
       text: this.state.text,
       id: this.messageID
     })
