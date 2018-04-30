@@ -34,6 +34,9 @@ class Chat extends Component {
   // send message to other user
   sendMessage(e) {
     e.preventDefault();
+    if(this.state.text === '') {
+      return;
+    }
     this.socket.emit('SEND_MESSAGE', {
       user: this.props.username,
       text: this.state.text,

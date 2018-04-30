@@ -32,6 +32,10 @@ server = app.listen(port, () => {
 // socket.io
 const io = require('socket.io')(server);
 
+let queue = [];
+var rooms = {};
+var names = {};
+
 io.on('connection', (socket) => {
   console.log(socket.id);
   socket.on('SEND_MESSAGE', (message) => {
