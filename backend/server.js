@@ -33,12 +33,36 @@ server = app.listen(port, () => {
 const io = require('socket.io')(server);
 
 let queue = [];
-var rooms = {};
-var names = {};
+let rooms = {};
+let names = {};
+let users = {};
+
+function connectUsers(socket) {
+  if(queue.length !== 0) {
+    let peer = queue.pop();
+    let room = socket.id + '#' + peer.id;
+    peer.join(room);
+    socket.join(room);
+    console.log(room);
+    rooms[peer.id] = room;
+    rooms[socket.id] = room;
+    peer.emit('CONNECT_CHAT', {'username': names[socket.id], 'room': room});
+    socket.emit('CONNECT_CHAT', {'username': names[peer.id], 'room': room});
+  } 
+  else {
+    queue.push(socket);
+  }
+}
 
 io.on('connection', (socket) => {
-  console.log(socket.id);
+  console.log(socket.id + ' connected.');
+  socket.on('SET_NAME', function (data) {
+    names[socket.id] = data.username;
+    users[socket.id] = socket;
+    connectUsers(socket);
+  });
   socket.on('SEND_MESSAGE', (message) => {
-    io.emit('RECEIVE_MESSAGE', message);
+    let room = rooms[socket.id];
+    socket.broadcast.to(room).emit('RECEIVE_MESSAGE', message);
   });
 });

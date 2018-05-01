@@ -7,12 +7,16 @@ class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      connected: false,
+      room: '',
+      connectedName: '',
       text: '',
       messageID: 0,
       messages: [],
     };
 
-    this.handleChange = this.handleChange.bind(this);    
+    this.handleChange = this.handleChange.bind(this);  
+    this.connectChat = this.connectChat.bind(this); 
     this.sendMessage = this.sendMessage.bind(this);
     this.addMessage = this.addMessage.bind(this);
 
@@ -20,11 +24,28 @@ class Chat extends Component {
     this.socket.on('RECEIVE_MESSAGE', (message) => {
       this.addMessage(message);
     });
+    this.socket.on('CONNECT_CHAT', (data) => {
+      this.connectChat(data);
+    });
+  }
+
+  componentDidMount() {
+    this.socket.emit('SET_NAME', {
+      username: this.props.username,
+    });
   }
 
   // handle input message changes
   handleChange(event) {
     this.setState({ text: event.target.value });
+  }
+
+  connectChat(data) {
+    this.setState({
+      connected: true,
+      room: data.room,
+      connectedName: data.username,
+    });
   }
 
   addMessage(message) {
