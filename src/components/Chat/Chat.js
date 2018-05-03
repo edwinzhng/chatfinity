@@ -17,6 +17,7 @@ class Chat extends Component {
 
     this.handleChange = this.handleChange.bind(this);  
     this.connectChat = this.connectChat.bind(this); 
+    this.connectNewUser = this.connectNewUser.bind(this); 
     this.sendMessage = this.sendMessage.bind(this);
     this.addMessage = this.addMessage.bind(this);
 
@@ -26,6 +27,9 @@ class Chat extends Component {
     });
     this.socket.on('CONNECT_CHAT', (data) => {
       this.connectChat(data);
+    });
+    this.socket.on('DISCONNECT_CHAT', (data) => {
+      this.disconnectChat(data);
     });
   }
 
@@ -46,6 +50,16 @@ class Chat extends Component {
       room: data.room,
       connectedName: data.username,
     });
+  }
+
+  connectNewUser(data) {
+    this.socket.emit('DISCONNECT_USER', {});
+    this.setState({
+      connected: false,
+      room: '',
+      connectedName: '',
+    });
+    this.socket.emit('CONNECT_NEW_USER', {});
   }
 
   addMessage(message) {
@@ -78,6 +92,10 @@ class Chat extends Component {
 
     return (
       <div id='chat'>
+        <div className='status'>
+          { this.state.connected ? 'Connected to ' + this.state.connectedName : 'Not Connected' }
+          <button onClick={this.connectNewUser}>Connect to New User</button>
+        </div>
         <div className='messages'>
           { messages }
         </div>

@@ -61,8 +61,20 @@ io.on('connection', (socket) => {
     users[socket.id] = socket;
     connectUsers(socket);
   });
+  socket.on('CONNECT_NEW_USER', () => {
+    connectUsers(socket);
+  });
   socket.on('SEND_MESSAGE', (message) => {
     let room = rooms[socket.id];
-    socket.broadcast.to(room).emit('RECEIVE_MESSAGE', message);
+    io.sockets.in(room).emit('RECEIVE_MESSAGE', message);
+  });
+  socket.on('DISCONNECT_USER', () => {
+    let room = rooms[socket.id];
+    let peerID = room.split('#')[1];
+    socket.leave(room);
+    users[peerID].leave(room);
+    rooms[socket.id] = null;
+    rooms[peerID] = null;
+    io.sockets.in(room).emit('RECEIVE_MESSAGE', message);
   });
 });
