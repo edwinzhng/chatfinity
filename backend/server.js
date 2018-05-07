@@ -71,10 +71,12 @@ io.on('connection', (socket) => {
   socket.on('DISCONNECT_USER', () => {
     let room = rooms[socket.id];
     let peerID = room.split('#')[1];
+    peerSocket = users[peerID];
     socket.leave(room);
-    users[peerID].leave(room);
+    peerSocket.leave(room);
     rooms[socket.id] = null;
     rooms[peerID] = null;
-    io.sockets.in(room).emit('RECEIVE_MESSAGE', message);
+    socket.emit('DISCONNECT_CHAT', {});
+    peerSocket.emit('DISCONNECT_CHAT', {});
   });
 });

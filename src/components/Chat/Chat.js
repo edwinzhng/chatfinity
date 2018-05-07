@@ -17,6 +17,7 @@ class Chat extends Component {
 
     this.handleChange = this.handleChange.bind(this);  
     this.connectChat = this.connectChat.bind(this); 
+    this.disconnectChat = this.disconnectChat.bind(this); 
     this.connectNewUser = this.connectNewUser.bind(this); 
     this.sendMessage = this.sendMessage.bind(this);
     this.addMessage = this.addMessage.bind(this);
@@ -28,8 +29,8 @@ class Chat extends Component {
     this.socket.on('CONNECT_CHAT', (data) => {
       this.connectChat(data);
     });
-    this.socket.on('DISCONNECT_CHAT', (data) => {
-      this.disconnectChat(data);
+    this.socket.on('DISCONNECT_CHAT', () => {
+      this.disconnectChat();
     });
   }
 
@@ -54,12 +55,15 @@ class Chat extends Component {
 
   connectNewUser(data) {
     this.socket.emit('DISCONNECT_USER', {});
+    this.socket.emit('CONNECT_NEW_USER', {});
+  }
+
+  disconnectChat() {
     this.setState({
       connected: false,
       room: '',
       connectedName: '',
     });
-    this.socket.emit('CONNECT_NEW_USER', {});
   }
 
   addMessage(message) {
