@@ -1,6 +1,8 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import chatReducer from './reducers/chatReducer';
-import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
+
+const sagaMiddleware = createSagaMiddleware();
 
 const reducer = combineReducers({
     chat: chatReducer,
@@ -8,7 +10,7 @@ const reducer = combineReducers({
 
 const store = createStore(
     reducer,
-    applyMiddleware(thunk)
+    applyMiddleware(sagaMiddleware)
 );
 
 export default store;

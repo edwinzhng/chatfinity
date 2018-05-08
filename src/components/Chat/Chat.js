@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import io from "socket.io-client";
 import Message from '../Message/Message';
+import * as chatActions from '../actions/chatActions';
 import './Chat.css'
 
 class Chat extends Component {
@@ -112,4 +114,16 @@ class Chat extends Component {
   }
 }
 
-export default Chat;
+function mapStateToProps(state, ownProps) {
+  return { 
+    messages: state.chat.messages
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(chatActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);
