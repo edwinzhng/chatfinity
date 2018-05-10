@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Chat from '../Chat/Chat';
 import UserPrompt from '../UserPrompt/UserPrompt';
 import './Main.css';
@@ -30,11 +31,23 @@ class Main extends Component {
         { 
           this.state.username === '' ? 
           <UserPrompt setUsername={this.setUsername}/> : 
-          <Chat username={this.state.username}/>
+          <Chat username={this.props.username}/>
         }
       </div>
     );
   }
 }
 
-export default Main;
+function mapStateToProps(state, ownProps) {
+  return { 
+    username: state.login.username
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(loginActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

@@ -13,17 +13,17 @@ function connectSocket() {
 
 function subscribeSocket(socket) {
     return eventChannel(emit => {
-        socket.on('CONNECT_CHAT', () => {
-            emit();
+        socket.on('CONNECT_CHAT', (data) => {
+            connectChat(data);
         });
         socket.on('DISCONNECT_CHAT', () => {
-            emit();
+            disconnectChat();
         });
         socket.on('SEND_MESSAGE', () => {
             emit();
         });
-        socket.on('RECIEVE_MESSAGE', () => {
-            emit();
+        socket.on('RECIEVE_MESSAGE', (message) => {
+            addMessage(message);
         });
         socket.on('CONNECT_NEW_USER', () => {
             emit();
@@ -33,7 +33,7 @@ function subscribeSocket(socket) {
 }
 
 function *receieveMessage(socket) {
-    const channel = yield call(subscribe, socket);
+    const channel = yield call(subscribeSocket, socket);
     while (true) {
       let action = yield take(channel);
       yield put(action);

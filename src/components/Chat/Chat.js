@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import io from "socket.io-client";
 import Message from '../Message/Message';
 import * as chatActions from '../actions/chatActions';
@@ -9,31 +10,9 @@ class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      connected: false,
-      room: '',
-      connectedName: '',
-      text: '',
-      messageID: 0,
-      messages: [],
+      text: ''
     };
-
     this.handleChange = this.handleChange.bind(this);  
-    this.connectChat = this.connectChat.bind(this); 
-    this.disconnectChat = this.disconnectChat.bind(this); 
-    this.connectNewUser = this.connectNewUser.bind(this); 
-    this.sendMessage = this.sendMessage.bind(this);
-    this.addMessage = this.addMessage.bind(this);
-
-    this.socket = io('localhost:3001');
-    this.socket.on('RECEIVE_MESSAGE', (message) => {
-      this.addMessage(message);
-    });
-    this.socket.on('CONNECT_CHAT', (data) => {
-      this.connectChat(data);
-    });
-    this.socket.on('DISCONNECT_CHAT', () => {
-      this.disconnectChat();
-    });
   }
 
   componentDidMount() {
@@ -47,29 +26,9 @@ class Chat extends Component {
     this.setState({ text: event.target.value });
   }
 
-  connectChat(data) {
-    this.setState({
-      connected: true,
-      room: data.room,
-      connectedName: data.username,
-    });
-  }
-
   connectNewUser(data) {
     this.socket.emit('DISCONNECT_USER', {});
     this.socket.emit('CONNECT_NEW_USER', {});
-  }
-
-  disconnectChat() {
-    this.setState({
-      connected: false,
-      room: '',
-      connectedName: '',
-    });
-  }
-
-  addMessage(message) {
-    this.setState({ messages: [...this.state.messages, message] });
   }
 
   // send message to other user
@@ -83,10 +42,6 @@ class Chat extends Component {
       text: this.state.text,
       id: this.messageID
     })
-    this.setState({
-      text: '',
-      messageID: this.state.messageID + 1,
-    });
   }
 
   render() {
@@ -99,7 +54,7 @@ class Chat extends Component {
     return (
       <div id='chat'>
         <div className='status'>
-          { this.state.connected ? 'Connected to ' + this.state.connectedName : 'Not Connected' }
+          { this.props.isConnected ? 'Connected to ' + this.props.peerName : 'Not Connected' }
           <button onClick={this.connectNewUser}>Connect to New User</button>
         </div>
         <div className='messages'>
@@ -116,7 +71,9 @@ class Chat extends Component {
 
 function mapStateToProps(state, ownProps) {
   return { 
-    messages: state.chat.messages
+    isConnected: state.chat.isConnected,
+    messages: state.chat.messages,
+    peerName: state.chat.peerName
   };
 }
 
