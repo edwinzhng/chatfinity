@@ -1,0 +1,16 @@
+.messages {
+    max-height: 640px;
+    overflow-y: auto;
+}
+
+.message-form {
+    margin-top: 20px;
+}
+
+.message-input {
+    width: calc(100% - 100px);
+}
+
+.send-btn {
+    width: 75px;
+}
