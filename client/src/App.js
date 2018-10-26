@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect, bindActionCreators } from 'react-redux';
 import Chat from '../Chat/Chat';
 import UserPrompt from '../UserPrompt/UserPrompt';
 import './App.css';
@@ -38,16 +38,4 @@ class App extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  return { 
-    username: state.login.username
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(loginActions, dispatch)
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import io from "socket.io-client";
 import Message from '../Message/Message';
 import * as chatActions from '../actions/chatActions';
 import './Chat.css'
