@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './styles/Message.css';
 
 class Message extends PureComponent {
-  static propsTypes = {
+  static propTypes = {
     text: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired
   }

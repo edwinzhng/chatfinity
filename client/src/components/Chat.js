@@ -5,7 +5,7 @@ import Message from './Message';
 import './styles/Chat.css';
 
 class Chat extends PureComponent {
-  static propsTypes = {
+  static propTypes = {
     isConnected: PropTypes.bool.isRequired,
     peerName: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired
