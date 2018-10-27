@@ -14,5 +14,13 @@
     "react/jsx-first-prop-new-line": "never", 
     "react/prefer-stateless-function": 0,
     "react/no-unused-prop-types": 0
+  },
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "webpack.config.js"
+      }
+    }
   }
 }
+

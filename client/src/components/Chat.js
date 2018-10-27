@@ -1,13 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import Message from './Message';
-import './styles/Chat.css';
+import Message from 'components/Message';
+import styles from 'components/styles/Chat.scss';
 
 class Chat extends PureComponent {
   static propTypes = {
-    isConnected: PropTypes.bool.isRequired,
-    peerName: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired
   }
 
@@ -15,9 +13,13 @@ class Chat extends PureComponent {
     super(props);
     this.state = {
       messageText: '',
-      messages: []
+      messages: [],
+      isConnected: false,
+      peerName: ''
     };
     this.handleChange = this.handleChange.bind(this);
+    this.connectNewUser = this.handleChange.bind(this);
+    this.sendMessage = this.handleChange.bind(this);
   }
 
   // handle input message changes
@@ -25,19 +27,19 @@ class Chat extends PureComponent {
     this.setState({ messageText: event.target.value });
   }
 
+  connectNewUser() {
+    const { username } = this.props;
+    console.log(username);
+  }
+
   // send message to other user
   sendMessage(e) {
-    const { username } = this.props;
     const { messageText } = this.state;
     e.preventDefault();
     if (messageText === '') {
       return;
     }
-    this.socket.emit('SEND_MESSAGE', {
-      user: username,
-      messageText,
-      id: this.messageID
-    });
+    console.log(messageText);
   }
 
   renderMessages() {
@@ -48,28 +50,27 @@ class Chat extends PureComponent {
   }
 
   render() {
-    const { isConnected, peerName } = this.props;
-    const { messageText } = this.state;
+    const { messageText, isConnected, peerName } = this.state;
     return (
-      <div id="chat">
+      <div className={styles.chat}>
         <div className="status">
           {isConnected ? `Connected to ${peerName}` : 'Not Connected'}
-          <button onClick={this.connectNewUser} type="button">
+          <button onClick={this.connectNewUser} type="button" className={styles.connectBtn}>
             Connect to New User
           </button>
         </div>
-        <div className="messages">
-          { renderMessages() }
+        <div className={styles.messages}>
+          { this.renderMessages() }
         </div>
-        <form className="message-form" onSubmit={this.sendMessage}>
+        <form className={styles.messageForm} onSubmit={(e) => { e.preventDefault(); this.sendMessage(e); }}>
           <input
             type="text"
             placeholder="Type a message ..."
-            className="message-input"
+            className={styles.messageInput}
             value={messageText}
             onChange={this.handleChange}
           />
-          <button className="send-btn" type="submit">
+          <button className={styles.sendBtn} type="submit">
             Send
           </button>
         </form>

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import './styles/Message.css';
+import styles from 'components/styles/Message.scss';
 
 class Message extends PureComponent {
   static propTypes = {
@@ -12,11 +12,11 @@ class Message extends PureComponent {
   render() {
     const { text, username } = this.props;
     return (
-      <div className="message">
-        <span className="user">
+      <div className={styles.message}>
+        <span className={styles.username}>
           {`${username}: `}
         </span>
-        <span className="text">
+        <span className={styles.text}>
           {text}
         </span>
       </div>

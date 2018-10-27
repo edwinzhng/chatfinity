@@ -1,4 +1,10 @@
 {
-  "plugins": ["react-hot-loader/babel"],
-  "presets": ["env", "react"]
+  "presets": [
+    "env",
+    "react"
+  ],
+  "plugins": [
+    "react-hot-loader/babel",
+    "transform-class-properties"
+  ]
 }

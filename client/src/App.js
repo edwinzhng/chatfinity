@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import Chat from '../components/Chat';
-import SignIn from '../components/SignIn';
-import './styles/App.css';
+import Chat from 'components/Chat';
+import SignIn from 'components/SignIn';
+import styles from 'styles/App.scss';
 
 class App extends Component {
   constructor(props) {
@@ -14,9 +14,9 @@ class App extends Component {
   }
 
   // handle input message changes
-  setUsername(name, event) {
+  setUsername(name, e) {
     const { username } = this.state;
-    event.preventDefault();
+    e.preventDefault();
     if (username === '') {
       this.setState({ username: name });
     }
@@ -25,8 +25,8 @@ class App extends Component {
   render() {
     const { username } = this.state;
     return (
-      <div className="App">
-        <header className="header">
+      <div className={styles.app}>
+        <header className={styles.header}>
           <h1>
             Chatfinity
           </h1>

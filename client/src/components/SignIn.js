@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import './styles/SignIn.css';
+import styles from 'components/styles/SignIn.scss';
 
 class SignIn extends PureComponent {
   static propTypes = {
@@ -25,22 +25,19 @@ class SignIn extends PureComponent {
     const { setUsername } = this.props;
     const { nameText } = this.state;
     return (
-      <div className="userprompt">
-        <div className="prompt-text">
+      <div className={styles.signIn}>
+        <div className={styles.promptText}>
           Enter your name to start chatting!
         </div>
-        <form
-          className="message-form"
-          onSubmit={event => setUsername(nameText, event)}
-        >
+        <form className={styles.messageForm} onSubmit={e => setUsername(nameText, e)}>
           <input
             type="text"
             placeholder="Enter a username ..."
-            className="username-input"
+            className={styles.usernameInput}
             value={nameText}
             onChange={this.handleChange}
           />
-          <button className="start-btn" type="submit">
+          <button className={styles.joinBtn} type="submit">
             Join a room!
           </button>
         </form>

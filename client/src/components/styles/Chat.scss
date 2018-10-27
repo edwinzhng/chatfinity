@@ -1,0 +1,22 @@
+.messages {
+    max-height: 640px;
+    overflow-y: auto;
+}
+
+.connectBtn {
+    margin-left: 20px;
+}
+
+.messageForm {
+    margin-top: 20px;
+}
+
+.messageInput {
+    width: 80%;
+    padding: 10px;
+}
+
+.sendBtn {
+    margin-left: 20px;
+    width: calc(20% - 45px);
+}
