@@ -1,4 +1,4 @@
-import { pubsub } from './pubsub';
+import { pubsub } from './index'
 
 export const MESSAGE_SENT = 'MESSAGE_SENT';
 

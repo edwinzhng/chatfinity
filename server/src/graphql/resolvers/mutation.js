@@ -1,4 +1,4 @@
-import { pubsub } from './pubsub'
+import { pubsub } from './index'
 import { MESSAGE_SENT } from './subscription';
 
 export const sendMessage = (root, args, ctx) => {
